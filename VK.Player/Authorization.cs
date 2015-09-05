@@ -40,7 +40,8 @@ namespace VK.Player
                     App.Default.token = l.Split('&')[0].Split('=')[1];
                     App.Default.id = l.Split('=')[3];
                     App.Default.auth = true;
-                    MessageBox.Show(App.Default.token + " " + App.Default.id);
+                    // Debug message
+                    //MessageBox.Show(App.Default.token + " " + App.Default.id);
                     this.Close();
                 }
             }
