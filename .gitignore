@@ -1,3 +1,5 @@
 VK.Player.v12.suo
 VK.Player/bin/
-VK.Player/obj
+VK.Player/obj/
+packages/Newtonsoft.Json.7.0.1/tools/
+packages/Newtonsoft.Json.7.0.1/Newtonsoft.Json.7.0.1.nupkg
