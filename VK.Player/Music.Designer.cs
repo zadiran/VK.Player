@@ -69,6 +69,7 @@
             this.ClientSize = new System.Drawing.Size(284, 340);
             this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Controls.Add(this.listBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Music";
             this.Text = "VK.Player";
             this.Load += new System.EventHandler(this.Music_Load);
