@@ -18,6 +18,8 @@ namespace VK.Player
     public partial class Music : Form
     {
         public List<Audio> audioList;
+        WMPLib.IWMPPlaylist PlayList;
+
         public Music()
         {
             InitializeComponent();
@@ -47,7 +49,7 @@ namespace VK.Player
             {
                 Thread.Sleep(500);
             }
-
+            
             WebRequest req = WebRequest.Create("https://api.vk.com/method/audio.get?owner_id=" + App.Default.id + "&need_user=0&access_token=" + App.Default.token);
             WebResponse res = req.GetResponse();
             var dataStream = res.GetResponseStream();
@@ -62,11 +64,25 @@ namespace VK.Player
 
             this.Invoke((MethodInvoker)delegate
             {
+                PlayList = axWindowsMediaPlayer1.playlistCollection.newPlaylist("vkPlayList");
+
                 foreach (var item in audioList)
                 {
+                    PlayList.appendItem(axWindowsMediaPlayer1.newMedia(item.url));
                     listBox1.Items.Add(item.artist + " - " + item.title);
                 }
+                axWindowsMediaPlayer1.currentPlaylist = PlayList;
+                axWindowsMediaPlayer1.Ctlcontrols.stop();
             });
+        }
+
+        private void listBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                axWindowsMediaPlayer1.Ctlcontrols.play();
+                axWindowsMediaPlayer1.Ctlcontrols.currentItem = axWindowsMediaPlayer1.currentPlaylist.get_Item(listBox1.SelectedIndex);
+            }
         }
     }
 }
