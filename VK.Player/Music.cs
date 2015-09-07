@@ -84,5 +84,52 @@ namespace VK.Player
                 axWindowsMediaPlayer1.Ctlcontrols.currentItem = axWindowsMediaPlayer1.currentPlaylist.get_Item(listBox1.SelectedIndex);
             }
         }
+
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (!App.Default.auth && audioList == null)
+            {
+                Thread.Sleep(500);
+            }
+
+            WebClient c = new WebClient();
+            if (audioList != null)
+            {
+                int j = 0;
+                for (int i = 11; i < audioList.Count; i++)
+                {
+                    if (j > 10)
+                    {
+                        j = 0;
+                        Thread.Sleep(10000);
+                    }
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        this.Text = "VK.Player - Downloading (" + i + "/" + audioList.Count + ")";
+                    });
+                    j++;
+                    try
+                    {
+                        c.DownloadFile(audioList[i].url, "D:\\MusicVK\\" + audioList[i].artist + " - " + audioList[i].title + ".mp3");
+                    }
+                    catch
+                    {
+                        Thread.Sleep(5000);
+                        continue;
+                    }
+                    Thread.Sleep(5000);
+                }
+                this.Invoke((MethodInvoker)delegate
+                {
+                    this.Text = "VK.Player";
+                }); 
+            }
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            backgroundWorker2.RunWorkerAsync();
+        }
     }
 }
