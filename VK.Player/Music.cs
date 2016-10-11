@@ -68,8 +68,14 @@ namespace VK.Player
 
                 foreach (var item in audioList)
                 {
-                    PlayList.appendItem(axWindowsMediaPlayer1.newMedia(item.url));
-                    listBox1.Items.Add(item.artist + " - " + item.title);
+                    var displayedTitle = item.artist + " - " + item.title;
+                    var displayedTitleShort = new string(displayedTitle.Length > 50 ? displayedTitle.Take(50).Concat(new[] { '.', '.', '.' }).ToArray() : displayedTitle.ToArray());
+
+                    var playListItem = axWindowsMediaPlayer1.newMedia(item.url);
+                    playListItem.setItemInfo("DisplayedTitle", displayedTitleShort);
+                    PlayList.appendItem(playListItem);
+
+                    listBox1.Items.Add(displayedTitle);
                 }
                 axWindowsMediaPlayer1.currentPlaylist = PlayList;
                 axWindowsMediaPlayer1.Ctlcontrols.stop();
@@ -130,6 +136,11 @@ namespace VK.Player
         private void button1_Click(object sender, EventArgs e)
         {
             backgroundWorker2.RunWorkerAsync();
+        }
+
+        private void axWindowsMediaPlayer1_CurrentItemChange(object sender, AxWMPLib._WMPOCXEvents_CurrentItemChangeEvent e)
+        {
+            lblCurrentTrack.Text = axWindowsMediaPlayer1.currentMedia.getItemInfo("DisplayedTitle");
         }
     }
 }
